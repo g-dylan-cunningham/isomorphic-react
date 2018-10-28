@@ -1,1 +1,1 @@
-console.log('src/index')
+console.info('pulling in js from src/index')

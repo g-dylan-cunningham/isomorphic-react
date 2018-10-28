@@ -5,7 +5,7 @@ export default {
     entry: [
         'webpack-hot-middleware/client?reload=true',
         'babel-regenerator-runtime',
-        path.resolve(__dirname, 'src/index')
+        path.resolve(__dirname, 'src/')
     ],
     output: {
         path: path.resolve(__dirname, "public"),
