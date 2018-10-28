@@ -6,6 +6,11 @@ import { argv } from 'optimist';
 import { get } from 'request-promise';
 import { question, questions } from '../data/api-real-urls';
 import { delay } from 'redux-saga';
+import getStore from '../src/getStore';
+import { renderToString } from 'react-dom/server';
+import { Provider } from 'react-redux';
+import React from 'react';
+import App from '../src/App';
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -13,6 +18,7 @@ const app = express();
 // if our api is working, we'll use live data, otherwise we use mock
 // we set this in our run script flag - see readme
 const useLiveData = argv.useLiveData === "true";
+const useServerRender = argv.useServerRender === "true";
 
 function * getQuestions(){
     let data;
@@ -69,6 +75,28 @@ if (process.env.NODE_ENV === 'development') {
 
 app.get(['/'], function * (req, res){
     let index = yield fs.readFile('./public/index.html', "utf-8");
+
+    const initialState = {
+        questions: []
+    };
+
+    const questions = yield getQuestions();
+    initialState.questions = questions.items;
+
+    const store = getStore(initialState);
+
+    if (useServerRender) {
+        const appRendered = renderToString(
+            <Provider store={store}>
+                <App />
+            </Provider>
+        );
+        index = index.replace(`<%= preloadedApplication %>`, appRendered)
+    } else {
+        index = index.replace(`<%= preloadedApplication %>`, `please wait while we load applicaton`)
+    }
+
+
     res.send(index);
 });
 
