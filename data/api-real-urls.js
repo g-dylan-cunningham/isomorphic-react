@@ -1,0 +1,2 @@
+export const questions = `https://api.stackexchange.com/2.2/questions?order=desc&sort=activity&site=stackoverflow`;
+export const question = (id) =>`https://api.stackexchange.com/2.2/questions/${id}?order=desc&sort=activity&site=stackoverflow`;
