@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import QuestionList from './components/QuestionList';
 
 const AppDisplay = ({test}) => (
     <div>
         <h1>
             Isomorphic React {test}
         </h1>
+        <QuestionList />
     </div>
 )
 
